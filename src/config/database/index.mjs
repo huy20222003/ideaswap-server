@@ -4,12 +4,13 @@ import { connect } from 'mongoose';
 
 async function connectDB() {
   try {
-    connect(
-      `mongodb://127.0.0.1/learning-app`,
+    await connect(
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@learning-app.3an83io.mongodb.net/learning?retryWrites=true&w=majority&appName=learning-app`
+      
     );
-    console.log('Connect sucessfully');
+    console.log('Connect successfully');
   } catch (error) {
-    console.log('Connect failure' + error);
+    console.error('Connection failed:', error);
   }
 }
 
