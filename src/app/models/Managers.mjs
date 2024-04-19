@@ -1,0 +1,74 @@
+import { Schema, model } from 'mongoose';
+
+const Managers = new Schema(
+  {
+    firstName: {
+        type: String,
+        default: '',
+        maxLength: 200,
+        required: true,
+        trim: true,
+      },
+      lastName: {
+        type: String,
+        default: '',
+        maxLength: 200,
+        required: true,
+        trim: true,
+      },
+      username: {
+        type: String,
+        default: '',
+        maxLength: 100,
+        required: true,
+        trim: true,
+        unique: true,
+      },
+      email: {
+        type: String,
+        default: '',
+        required: true,
+        trim: true,
+        unique: true,
+      },
+      phoneNumber: {
+        type: String,
+        default: null,
+        trim: true,
+      },
+      address: {
+        type: String,
+        default: '',
+        maxLength: 3000,
+      },
+      password: {
+        type: String,
+        default: '$2a$10$ZD/EROx56XOvcutCg9jHxeXrz.iqMstXUCksTyvBb8gfD8SPPm7uW',
+        required: true,
+        trim: true,
+        minLength: 7,
+      },
+      avatar: {
+        type: String,
+        default:
+          'https://antimatter.vn/wp-content/uploads/2022/11/anh-avatar-trang-fb-mac-dinh.jpg',
+      },
+      birthday: {
+        type: Schema.Types.Date,
+        required: true,
+      },
+      gender: {
+        type: String,
+        default: "Male",
+      },
+      roleID: {
+        type: Schema.Types.ObjectId,
+        ref: 'Roles',
+      },
+    },
+    {
+      timestamps: true,
+    }
+);
+
+export default model('Managers', Managers);
