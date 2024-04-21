@@ -7,7 +7,7 @@ import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 import UserController from '../app/controllers/UserController.mjs';
 //-----------------------------------------------------------
 
-router.get('/', UserController.getAllUsers);
 router.get('/:_id', UserController.getUserById);
+router.get('/', UserController.getAllUsers);
 
 export default router;

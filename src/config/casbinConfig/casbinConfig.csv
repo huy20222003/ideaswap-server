@@ -1,2 +1,17 @@
 #auth user router
 p, user, /api/v1/auth/account, GET
+
+#blog router
+p, user, /api/v1/blog/add-blog, POST
+p, user, /api/v1/blog/update-blog, PUT
+
+#heart router
+p, user, /api/v1/heart/add-heart, POST
+
+#video router
+p, user, /api/v1/video/add-video, POST
+p, user, /api/v1/video/delete-video/:_id, DELETE
+
+#course router
+p, user, /api/v1/course/add-course, POST
+p, user, /api/v1/course/delete-course/:_id, DELETE
