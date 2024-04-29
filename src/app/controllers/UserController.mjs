@@ -34,6 +34,33 @@ class UsersController {
       });
     }
   }
+
+  async updateUser(req, res) {
+    try {
+      const updatedUser = await Users.findByIdAndUpdate(
+        req.params._id,
+        req.body,
+        { new: true }
+      );
+      if (!updatedUser) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'User not found' });
+      }
+
+      return res.status(201).json({
+        success: true,
+        message: 'User updated successfully!',
+        user: updatedUser,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default new UsersController();

@@ -139,6 +139,28 @@ class BlogController {
       });
     }
   }
+
+  async deleteBlog(req, res) {
+    try {
+      const deletedBlog = await Blogs.findByIdAndDelete(req.params._id);
+      if (!deletedBlog) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'Blog not found' });
+      }
+      return res.status(201).json({
+        success: true,
+        message: 'Blog deleted successfully!',
+        deletedBlog,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default new BlogController();

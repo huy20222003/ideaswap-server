@@ -8,11 +8,14 @@ import userRouter from './userRouter.mjs';
 import couseRouter from './courseRouter.mjs';
 import videoRouter from './videoRouter.mjs';
 import censorshipsRouter from './censorshipsRouter.mjs';
+import followRouter from './followRouter.mjs';
+import managerAuthController from './managerAuthRouter.mjs';
 //------------------------------------------------------------
 
 
 function routes(app) {
     app.use('/api/v1/auth', authRouter);
+    app.use('/api/v1/auth/admin', managerAuthController);
     app.use('/api/v1/blog', blogRouter);
     app.use('/api/v1/heart', heartRouter);
     app.use('/api/v1/comment', commentRouter);
@@ -21,6 +24,7 @@ function routes(app) {
     app.use('/api/v1/course', couseRouter);
     app.use('/api/v1/video', videoRouter);
     app.use('/api/v1/censorships', censorshipsRouter);
+    app.use('/api/v1/follow', followRouter);
 }
 
 export default routes;

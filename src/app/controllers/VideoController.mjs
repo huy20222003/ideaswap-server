@@ -5,7 +5,6 @@ class VideoController {
   async getVideoById(req, res) {
     try {
       const video = await Videos.findById(req.params._id);
-      console.log(req.params._id);
       return res.status(200).json({
         success: true,
         message: 'Retrieve video data successfully!',
@@ -82,6 +81,40 @@ class VideoController {
       });
     }
   }
+
+  async updateVideo(req, res) {
+    try {
+      const updatedVideo = await Videos.findByIdAndUpdate(
+        req.params._id,
+        req.body,
+        { new: true }
+      );
+      if (!updatedVideo) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'Video not found' });
+      }
+
+      if (!updatedVideo.title) {
+        return res
+          .status(400)
+          .json({ success: false, error: 'Video title is required' });
+      } else {
+        return res.status(201).json({
+          success: true,
+          message: 'Video updated successfully!',
+          video: updatedVideo,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
   async deleteVideo(req, res) {
     try {
       const deletedVideo = await Videos.findByIdAndDelete(req.params._id);

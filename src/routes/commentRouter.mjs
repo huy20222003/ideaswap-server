@@ -8,5 +8,6 @@ import CommentController from '../app/controllers/CommentController.mjs';
 //-----------------------------------------------------------
 
 router.get('/', CommentController.getAllComments);
+router.post('/add', authVerify, casbinMiddleware, CommentController.addCourse);
 
 export default router;

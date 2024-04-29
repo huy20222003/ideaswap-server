@@ -8,7 +8,7 @@ const Comments = new Schema(
     },
     parentCommentID: {
       type: Schema.Types.ObjectId,
-      required: true,
+      default: null,
     },
     userID: {
       type: Schema.Types.ObjectId,

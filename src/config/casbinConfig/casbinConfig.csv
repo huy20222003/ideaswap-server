@@ -2,16 +2,27 @@
 p, user, /api/v1/auth/account, GET
 
 #blog router
-p, user, /api/v1/blog/add-blog, POST
-p, user, /api/v1/blog/update-blog, PUT
+p, user, /api/v1/blog/add, POST
+p, user, /api/v1/blog/update, PUT
+p, user, /api/v1/blog/delete/:_id, DELETE
 
 #heart router
-p, user, /api/v1/heart/add-heart, POST
+p, user, /api/v1/heart/add, POST
 
 #video router
 p, user, /api/v1/video/add-video, POST
-p, user, /api/v1/video/delete-video/:_id, DELETE
+p, user, /api/v1/video/delete/:_id, DELETE
+p, user, /api/v1/video/update/:_id, PUT
 
 #course router
-p, user, /api/v1/course/add-course, POST
-p, user, /api/v1/course/delete-course/:_id, DELETE
+p, user, /api/v1/course/add, POST
+p, user, /api/v1/course/delete/:_id, DELETE
+
+#follow router
+p, user, /api/v1/follow, GET
+
+#user router
+p, user, /api/v1/user/update/:_id, PUT
+
+#comment router
+p, user, /api/v1/comment/add, POST

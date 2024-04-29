@@ -1,6 +1,6 @@
 import Censorships from '../models/Censorships.mjs';
 
-class HeartController {
+class CensorshipsController {
   async getAllCensorships(req, res) {
     try {
       const censorships = await Censorships.find({});
@@ -19,4 +19,4 @@ class HeartController {
   }
 }
 
-export default new HeartController();
+export default new CensorshipsController();

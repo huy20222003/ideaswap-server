@@ -4,10 +4,9 @@ const router = Router();
 import authVerify from '../middleware/authVerify.mjs';
 import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 //controller
-import HeartController from '../app/controllers/HeartController.mjs';
+import FollowController from '../app/controllers/FollowController.mjs';
 //-----------------------------------------------------------
 
-router.get('/', HeartController.getAllHearts);
-router.post('/add', authVerify, casbinMiddleware, HeartController.addHeart);
+router.get('/', authVerify, casbinMiddleware, FollowController.getAllFollows);
 
 export default router;

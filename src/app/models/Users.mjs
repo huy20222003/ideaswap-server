@@ -60,6 +60,7 @@ const Users = new Schema(
     },
     birthday: {
       type: Schema.Types.Date,
+      default: "01/01/1970",
     },
     gender: {
       type: String,
