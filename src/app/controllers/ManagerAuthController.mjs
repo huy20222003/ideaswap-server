@@ -48,7 +48,7 @@ class AuthController {
         });
       }
 
-      const passwordMatch = await bcryptjs.compare(password, user.password);
+      const passwordMatch = await bcryptjs.compare(password, manager.password);
 
       if (!passwordMatch) {
         return res.status(401).json({

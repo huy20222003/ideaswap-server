@@ -12,6 +12,7 @@ p, user, /api/v1/blog/delete/:_id, DELETE
 p, creator, /api/v1/blog/add, POST
 p, creator, /api/v1/blog/update, PUT
 p, creator, /api/v1/blog/delete/:_id, DELETE
+p, manager, /api/v1/blog/delete/:_id, DELETE
 
 #heart router
 p, user, /api/v1/heart/add, POST
@@ -23,10 +24,12 @@ p, creator, /api/v1/heart/delete, DELETE
 p, creator, /api/v1/video/add, POST
 p, creator, /api/v1/video/delete/:_id, DELETE
 p, creator, /api/v1/video/update/:_id, PUT
+p, manager, /api/v1/video/delete/:_id, DELETE
 
 #course router
 p, creator, /api/v1/course/add, POST
 p, creator, /api/v1/course/delete/:_id, DELETE
+p, manager, /api/v1/course/delete/:_id, DELETE
 
 #follow router
 p, user, /api/v1/follow, GET
