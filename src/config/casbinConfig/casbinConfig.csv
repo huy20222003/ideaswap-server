@@ -1,6 +1,7 @@
 #auth user router
 p, user, /api/v1/auth/account, GET
 p, creator, /api/v1/auth/account, GET
+p, manager, /api/v1/auth/account, GET
 
 #auth manager router
 p, manager, /api/v1/auth/admin/account, GET
