@@ -1,6 +1,6 @@
 import Courses from '../models/Courses.mjs';
 
-class HeartController {
+class CourseController {
   async getAllCourses(req, res) {
     try {
       const courses = await Courses.find({});
@@ -130,4 +130,4 @@ class HeartController {
   }
 }
 
-export default new HeartController();
+export default new CourseController();

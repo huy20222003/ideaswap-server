@@ -1,28 +1,40 @@
 #auth user router
 p, user, /api/v1/auth/account, GET
+p, creator, /api/v1/auth/account, GET
+
+#auth manager router
+p, manager, /api/v1/auth/admin/account, GET
 
 #blog router
 p, user, /api/v1/blog/add, POST
 p, user, /api/v1/blog/update, PUT
 p, user, /api/v1/blog/delete/:_id, DELETE
+p, creator, /api/v1/blog/add, POST
+p, creator, /api/v1/blog/update, PUT
+p, creator, /api/v1/blog/delete/:_id, DELETE
 
 #heart router
 p, user, /api/v1/heart/add, POST
+p, creator, /api/v1/heart/add, POST
+p, user, /api/v1/heart/delete, DELETE
+p, creator, /api/v1/heart/delete, DELETE
 
 #video router
-p, user, /api/v1/video/add-video, POST
-p, user, /api/v1/video/delete/:_id, DELETE
-p, user, /api/v1/video/update/:_id, PUT
+p, creator, /api/v1/video/add, POST
+p, creator, /api/v1/video/delete/:_id, DELETE
+p, creator, /api/v1/video/update/:_id, PUT
 
 #course router
-p, user, /api/v1/course/add, POST
-p, user, /api/v1/course/delete/:_id, DELETE
+p, creator, /api/v1/course/add, POST
+p, creator, /api/v1/course/delete/:_id, DELETE
 
 #follow router
 p, user, /api/v1/follow, GET
+p, creator, /api/v1/follow, GET
 
 #user router
 p, user, /api/v1/user/update/:_id, PUT
 
 #comment router
 p, user, /api/v1/comment/add, POST
+p, creator, /api/v1/comment/add, POST

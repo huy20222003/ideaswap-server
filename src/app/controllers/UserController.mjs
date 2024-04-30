@@ -20,7 +20,7 @@ class UsersController {
 
   async getUserById(req, res) {
     try {
-      const user = await Users.findById(req.params._id);
+      const user = await Users.findById(req.params._id).populate('roleID');
       return res.status(200).json({
         success: true,
         message: 'Retrieve user data successfully!',

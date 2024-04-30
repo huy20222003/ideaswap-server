@@ -10,6 +10,7 @@ import videoRouter from './videoRouter.mjs';
 import censorshipsRouter from './censorshipsRouter.mjs';
 import followRouter from './followRouter.mjs';
 import managerAuthController from './managerAuthRouter.mjs';
+import roleRouter from './roleRouter.mjs';
 //------------------------------------------------------------
 
 
@@ -25,6 +26,7 @@ function routes(app) {
     app.use('/api/v1/video', videoRouter);
     app.use('/api/v1/censorships', censorshipsRouter);
     app.use('/api/v1/follow', followRouter);
+    app.use('/api/v1/role', roleRouter);
 }
 
 export default routes;
