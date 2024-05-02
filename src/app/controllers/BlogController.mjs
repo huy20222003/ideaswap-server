@@ -148,11 +148,20 @@ class BlogController {
           .status(404)
           .json({ success: false, error: 'Blog not found' });
       }
-      return res.status(201).json({
-        success: true,
-        message: 'Blog deleted successfully!',
-        deletedBlog,
-      });
+      const deletedCensorship = await Censorships.findOneAndDelete({contentID: deletedBlog._id});
+      if(deletedBlog) {
+        return res.status(201).json({
+          success: true,
+          message: 'Blog deleted successfully!',
+          deletedBlog,
+        });
+      } else {
+        return res.status(400).json({
+          success: true,
+          message: 'Blog deleted failed!',
+          deletedBlog,
+        });
+      }
     } catch (error) {
       return res.status(500).json({
         success: false,

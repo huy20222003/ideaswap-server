@@ -4,9 +4,10 @@ const router = Router();
 import authVerify from '../middleware/authVerify.mjs';
 import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 //controller
-import Censorships from '../app/controllers/Censorships.mjs';
+import CensorshipsController from '../app/controllers/CensorshipsController.mjs';
 //-----------------------------------------------------------
 
-router.get('/', Censorships.getAllCensorships);
+router.get('/', CensorshipsController.getAllCensorships);
+router.put('/update', CensorshipsController.updateCensorship);
 
 export default router;

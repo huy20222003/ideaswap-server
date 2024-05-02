@@ -41,3 +41,6 @@ p, user, /api/v1/user/update/:_id, PUT
 #comment router
 p, user, /api/v1/comment/add, POST
 p, creator, /api/v1/comment/add, POST
+
+#censorship router
+p, manager, /api/v1/censorship, PUT
