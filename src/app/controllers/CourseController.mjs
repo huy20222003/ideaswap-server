@@ -55,7 +55,7 @@ class CourseController {
             description,
             imageUrl: uploadResult.imageUrl,
             userID,
-            view: 0
+            view: 0,
           });
           await newCourse.save();
           return res.status(201).json({
@@ -115,11 +115,21 @@ class CourseController {
           .status(404)
           .json({ success: false, error: 'Course not found' });
       }
-      return res.status(201).json({
-        success: true,
-        message: 'Course deleted successfully!',
-        deletedCourse,
+      const deletedCensorship = await Censorships.findOneAndDelete({
+        contentID: deletedBlog._id,
       });
+      if (deletedCensorship) {
+        return res.status(201).json({
+          success: true,
+          message: 'Course deleted successfully!',
+          deletedCourse,
+        });
+      } else {
+        return res.status(400).json({
+          success: true,
+          message: 'Course deleted failed!',
+        });
+      }
     } catch (error) {
       return res.status(500).json({
         success: false,

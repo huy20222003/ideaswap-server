@@ -123,11 +123,19 @@ class VideoController {
           .status(404)
           .json({ success: false, error: 'Video not found' });
       }
-      return res.status(201).json({
-        success: true,
-        message: 'Video deleted successfully!',
-        deletedVideo,
-      });
+      const deletedCensorship = await Censorships.findOneAndDelete({contentID: deletedBlog._id});
+      if(deletedCensorship) {
+        return res.status(201).json({
+          success: true,
+          message: 'Video deleted successfully!',
+          deletedVideo,
+        });
+      } else {
+        return res.status(400).json({
+          success: true,
+          message: 'Video deleted failed!',
+        });
+      }
     } catch (error) {
       return res.status(500).json({
         success: false,

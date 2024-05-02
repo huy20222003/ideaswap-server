@@ -43,4 +43,4 @@ p, user, /api/v1/comment/add, POST
 p, creator, /api/v1/comment/add, POST
 
 #censorship router
-p, manager, /api/v1/censorship, PUT
+p, manager, /api/v1/censorships/update, PUT

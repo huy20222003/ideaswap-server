@@ -149,7 +149,7 @@ class BlogController {
           .json({ success: false, error: 'Blog not found' });
       }
       const deletedCensorship = await Censorships.findOneAndDelete({contentID: deletedBlog._id});
-      if(deletedBlog) {
+      if(deletedCensorship) {
         return res.status(201).json({
           success: true,
           message: 'Blog deleted successfully!',
@@ -159,7 +159,6 @@ class BlogController {
         return res.status(400).json({
           success: true,
           message: 'Blog deleted failed!',
-          deletedBlog,
         });
       }
     } catch (error) {

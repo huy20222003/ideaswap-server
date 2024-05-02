@@ -8,6 +8,6 @@ import CensorshipsController from '../app/controllers/CensorshipsController.mjs'
 //-----------------------------------------------------------
 
 router.get('/', CensorshipsController.getAllCensorships);
-router.put('/update', CensorshipsController.updateCensorship);
+router.put('/update', authVerify, casbinMiddleware, CensorshipsController.updateCensorship);
 
 export default router;
