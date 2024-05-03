@@ -10,7 +10,7 @@ dotenv.config();
 class ManagerAuthController {
   async getManagerProfile(req, res) {
     try {
-      const manager = await Managers.findById(req.manager._id).select(
+      const manager = await Managers.findById(req.user._id).select(
         '-password'
       );
       if (!manager) {
