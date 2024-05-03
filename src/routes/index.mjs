@@ -11,6 +11,7 @@ import censorshipsRouter from './censorshipsRouter.mjs';
 import followRouter from './followRouter.mjs';
 import managerAuthController from './managerAuthRouter.mjs';
 import roleRouter from './roleRouter.mjs';
+import managerRouter from './managerRouter.mjs';
 //------------------------------------------------------------
 
 
@@ -27,6 +28,7 @@ function routes(app) {
     app.use('/api/v1/censorships', censorshipsRouter);
     app.use('/api/v1/follow', followRouter);
     app.use('/api/v1/role', roleRouter);
+    app.use('/api/v1/manager', managerRouter);
 }
 
 export default routes;
