@@ -8,10 +8,10 @@ p, manager, /api/v1/auth/admin/account, GET
 
 #blog router
 p, user, /api/v1/blog/add, POST
-p, user, /api/v1/blog/update, PUT
+p, user, /api/v1/blog/update/:_id, PUT
 p, user, /api/v1/blog/delete/:_id, DELETE
 p, creator, /api/v1/blog/add, POST
-p, creator, /api/v1/blog/update, PUT
+p, creator, /api/v1/blog/update/:_id, PUT
 p, creator, /api/v1/blog/delete/:_id, DELETE
 p, manager, /api/v1/blog/delete/:_id, DELETE
 
@@ -56,3 +56,11 @@ p, manager, /api/v1/manager/:_id, GET
 p, manager, /api/v1/manager/add, POST
 p, manager, /api/v1/manager/update/:_id, PUT
 p, manager, /api/v1/manager/delete/:_id, DELETE
+
+#role router
+p, user, /api/v1/role, GET
+p, user, /api/v1/role/:_id, GET
+p, creator, /api/v1/role, GET
+p, creator, /api/v1/role/:_id, GET
+p, manager, /api/v1/role, GET
+p, manager, /api/v1/role/:_id, GET

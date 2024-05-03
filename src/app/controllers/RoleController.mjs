@@ -1,22 +1,22 @@
 import Roles from '../models/Roles.mjs';
 
 class RoleController {
-//   async getAllCourses(req, res) {
-//     try {
-//       const courses = await Courses.find({});
-//       return res.status(200).json({
-//         success: true,
-//         message: 'Retrieve Course data successfully!',
-//         courses: courses,
-//       });
-//     } catch (error) {
-//       return res.status(500).json({
-//         success: false,
-//         message: 'An error occurred while processing the request.',
-//         error: error.message,
-//       });
-//     }
-//   }
+  async getAllRoles(req, res) {
+    try {
+      const roles = await Roles.find({});
+      return res.status(200).json({
+        success: true,
+        message: 'Retrieve roles data successfully!',
+        roles: roles,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
 
   async getRoleById(req, res) {
     try {

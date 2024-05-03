@@ -33,8 +33,8 @@ class ManagerAuthController {
   }
 
   async login(req, res) {
-    const { managername, password } = req.body;
-    if (!managername || !password) {
+    const { username, password } = req.body;
+    if (!username || !password) {
       return res.status(400).json({
         success: false,
         message: 'Please provide managername and password.',
@@ -42,12 +42,12 @@ class ManagerAuthController {
     }
 
     try {
-      const manager = await Managers.findOne({ managername });
+      const manager = await Managers.findOne({ username });
 
       if (!manager) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid managername or password!',
+          message: 'Invalid username or password!',
         });
       }
 

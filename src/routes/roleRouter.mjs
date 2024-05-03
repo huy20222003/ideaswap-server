@@ -7,6 +7,7 @@ import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 import RoleController from '../app/controllers/RoleController.mjs';
 //-----------------------------------------------------------
 
-router.get('/:_id', RoleController.getRoleById);
+router.get('/:_id', authVerify, casbinMiddleware, RoleController.getRoleById);
+router.get('/', authVerify, casbinMiddleware, RoleController.getAllRoles);
 
 export default router;
