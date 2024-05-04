@@ -156,7 +156,7 @@ class VideoController {
           .status(404)
           .json({ success: false, error: 'Video not found' });
       }
-      const deletedCensorship = await Censorships.findOneAndDelete({contentID: deletedBlog._id});
+      const deletedCensorship = await Censorships.findOneAndDelete({contentID: deletedVideo._id});
       if(deletedCensorship) {
         return res.status(201).json({
           success: true,
