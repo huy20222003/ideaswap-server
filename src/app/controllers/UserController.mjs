@@ -3,7 +3,7 @@ import Users from '../models/Users.mjs';
 class UsersController {
   async getAllUsers(req, res) {
     try {
-      const users = await Users.find({}, { _id: 1, firstName: 1, lastName: 1, avatar: 1 });
+      const users = await Users.find({}, { password: 0 });
       return res.status(200).json({
         success: true,
         message: 'Retrieve users data successfully!',
