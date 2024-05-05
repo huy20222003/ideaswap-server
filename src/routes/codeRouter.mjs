@@ -4,10 +4,10 @@ const router = Router();
 import authVerify from '../middleware/authVerify.mjs';
 import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 //controller
-import FollowController from '../app/controllers/FollowController.mjs';
+import CodeController from '../app/controllers/CodeController.mjs';
 //-----------------------------------------------------------
 
-router.get('/', authVerify, casbinMiddleware, FollowController.getAllFollows);
-router.post('/add', authVerify, casbinMiddleware, FollowController.addFollow);
+router.post('/send', authVerify, casbinMiddleware, CodeController.sendCode);
+router.post('/verify', authVerify, casbinMiddleware, CodeController.verifyCode);
 
 export default router;

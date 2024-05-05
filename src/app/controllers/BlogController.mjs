@@ -8,9 +8,7 @@ class BlogController {
       const blogs = await Blogs.find({});
 
       // Sắp xếp lại các blog theo thời gian tạo, mới nhất lên đầu
-      blogs.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
+      blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       return res.status(200).json({
         success: true,
         message: 'Retrieve blogs data successfully!',
@@ -25,42 +23,21 @@ class BlogController {
     }
   }
 
-  async getSingleBlog(req, res) {
-    // try {
-    //   const blog = await Blogs.findById(req.params._id);
-    //   const user = await Users.findById(blog.userID).select('-password');
-    //   const hearts = await Hearts.find({ bvID: blog._id });
-    //   const comments = await Comments.find({ bvID: blog._id });
-    //   const shares = await Shares.find({ bvID: blog._id });
-
-    //   const processedBlog = {
-    //     data: {
-    //       _id: blog._id,
-    //       content: blog.content,
-    //       url: blog.url,
-    //       createdAt: blog.createdAt,
-    //       updatedAt: blog.updatedAt,
-    //     },
-    //     user: user,
-    //     property: {
-    //       hearts: hearts,
-    //       comments: comments,
-    //       shares: shares,
-    //     },
-    //   };
-
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: 'Retrieve blog data successfully!',
-    //     blog: processedBlog,
-    //   });
-    // } catch (error) {
-    //   return res.status(500).json({
-    //     success: false,
-    //     message: 'An error occurred while processing the request.',
-    //     error: error.message,
-    //   });
-    // }
+  async getBlogById(req, res) {
+    try {
+      const blog = await Blogs.findById(req.params._id);
+      return res.status(200).json({
+        success: true,
+        message: 'Retrieve blog data successfully!',
+        blog: blog,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
   }
 
   async addBlog(req, res) {
@@ -148,8 +125,10 @@ class BlogController {
           .status(404)
           .json({ success: false, error: 'Blog not found' });
       }
-      const deletedCensorship = await Censorships.findOneAndDelete({contentID: deletedBlog._id});
-      if(deletedCensorship) {
+      const deletedCensorship = await Censorships.findOneAndDelete({
+        contentID: deletedBlog._id,
+      });
+      if (deletedCensorship) {
         return res.status(201).json({
           success: true,
           message: 'Blog deleted successfully!',

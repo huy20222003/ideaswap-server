@@ -12,6 +12,8 @@ import followRouter from './followRouter.mjs';
 import managerAuthController from './managerAuthRouter.mjs';
 import roleRouter from './roleRouter.mjs';
 import managerRouter from './managerRouter.mjs';
+import codeRouter from './codeRouter.mjs';
+import documentRouter from './documentRouter.mjs';
 //------------------------------------------------------------
 
 
@@ -29,6 +31,8 @@ function routes(app) {
     app.use('/api/v1/follow', followRouter);
     app.use('/api/v1/role', roleRouter);
     app.use('/api/v1/manager', managerRouter);
+    app.use('/api/v1/code', codeRouter);
+    app.use('/api/v1/document', documentRouter);
 }
 
 export default routes;

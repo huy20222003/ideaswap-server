@@ -1,9 +1,13 @@
 import Users from '../models/Users.mjs';
+import bcrypt from 'bcryptjs';
 
 class UsersController {
   async getAllUsers(req, res) {
     try {
-      const users = await Users.find({}, { _id: 1, firstName: 1, lastName: 1, avatar: 1 });
+      const users = await Users.find(
+        {},
+        { _id: 1, firstName: 1, lastName: 1, avatar: 1 }
+      );
       return res.status(200).json({
         success: true,
         message: 'Retrieve users data successfully!',
@@ -37,11 +41,27 @@ class UsersController {
 
   async updateUser(req, res) {
     try {
+      let updateData = req.body;
+
+      // Check if password is provided in the request body
+      if (updateData.password) {
+        // Hash the password using bcrypt
+        const saltRounds = 10; // You can adjust the salt rounds as per your requirement
+        const hashedPassword = await bcrypt.hash(
+          updateData.password,
+          saltRounds
+        );
+
+        // Replace plain text password with hashed password in the update data
+        updateData.password = hashedPassword;
+      }
+
       const updatedUser = await Users.findByIdAndUpdate(
         req.params._id,
-        req.body,
+        updateData,
         { new: true }
       );
+
       if (!updatedUser) {
         return res
           .status(404)

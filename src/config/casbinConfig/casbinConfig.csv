@@ -38,9 +38,12 @@ p, manager, /api/v1/course/delete/:_id, DELETE
 #follow router
 p, user, /api/v1/follow, GET
 p, creator, /api/v1/follow, GET
+p, user, /api/v1/follow/add, POST
+p, creator, /api/v1/follow/add, POST
 
 #user router
 p, user, /api/v1/user/update/:_id, PUT
+p, creator, /api/v1/user/update/:_id, PUT
 
 #comment router
 p, user, /api/v1/comment/add, POST
@@ -64,3 +67,17 @@ p, creator, /api/v1/role, GET
 p, creator, /api/v1/role/:_id, GET
 p, manager, /api/v1/role, GET
 p, manager, /api/v1/role/:_id, GET
+
+#code router
+p, user, /api/v1/code/send, POST
+p, user, /api/v1/code/verify, POST
+p, creator, /api/v1/code/send, POST
+p, creator, /api/v1/code/verify, POST
+p, manager, /api/v1/code/send, POST
+p, manager, /api/v1/code/verify, POST
+
+#document router
+p, user, /api/v1/document, GET
+p, creator, /api/v1/document, GET
+p, creator, /api/v1/document/add, POST
+p, manager, /api/v1/document, GET

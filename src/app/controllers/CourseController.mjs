@@ -21,7 +21,6 @@ class CourseController {
   async getCourseById(req, res) {
     try {
       const course = await Courses.findById(req.params._id);
-      console.log(req.params._id);
       return res.status(200).json({
         success: true,
         message: 'Retrieve course data successfully!',
