@@ -45,6 +45,31 @@ class FollowsController {
       });
     }
   }
+
+  async deleteFollow(req, res) {
+    try {
+      const deletedFollow = await Follow.findOneAndDelete({
+        userID: req.body.userID,
+        followerID: req.body.followerID,
+      });
+      if (!deletedFollow) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'Follow not found' });
+      }
+      return res.status(201).json({
+        success: true,
+        message: 'Follow deleted successfully!',
+        deletedFollow,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default new FollowsController();

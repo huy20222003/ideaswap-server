@@ -1,14 +1,13 @@
-import Courses from '../models/Courses.mjs';
-import Videos from '../models/Videos.mjs';
+import Notifications from "../models/Notifications.mjs";
 
-class CourseController {
-  async getAllCourses(req, res) {
+class NotificationsController {
+  async getAllNotifications(req, res) {
     try {
-      const courses = await Courses.find({});
+      const notifications = await Notifications.find({});
       return res.status(200).json({
         success: true,
-        message: 'Retrieve Course data successfully!',
-        courses: courses,
+        message: 'Retrieve Notifications data successfully!',
+        notifications: notifications,
       });
     } catch (error) {
       return res.status(500).json({
@@ -150,4 +149,4 @@ class CourseController {
   }
 }
 
-export default new CourseController();
+export default new NotificationsController();

@@ -82,6 +82,7 @@ class ManagerController {
         birthday,
         phoneNumber,
         gender,
+        imageBase64
       } = req.body;
   
       // Validation
@@ -104,20 +105,27 @@ class ManagerController {
       }
   
       const userRole = await Roles.findOne({ name: 'manager' });
-  
-      const newManager = new Managers({
-        firstName,
-        lastName,
-        username,
-        email,
-        address,
-        phoneNumber,
-        gender,
-        birthday,
-        roleID: userRole._id,
-      });
-  
-      await newManager.save();
+      
+      const uploadResult = await Managers.uploadFileToCloudinary(imageBase64);
+      if (!uploadResult.status) {
+        return res
+          .status(500)
+          .json({ success: false, message: 'Error uploading imageUrl' });
+      } else {
+        const newManager = new Managers({
+          firstName,
+          lastName,
+          username,
+          email,
+          address,
+          phoneNumber,
+          gender,
+          birthday,
+          avatar: uploadResult.imageUrl,
+          roleID: userRole._id,
+        });
+        await newManager.save();
+      }
   
       return res.status(200).json({
         success: true,

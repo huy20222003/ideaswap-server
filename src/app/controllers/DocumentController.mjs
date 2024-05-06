@@ -119,6 +119,47 @@ class DocumentController {
       });
     }
   }
+
+  async deleteDocument(req, res) {
+    try {
+      const { _id } = req.params;
+
+      // Kiểm tra xem document có tồn tại không
+      const document = await Documents.findById(_id);
+      if (!document) {
+        return res.status(404).json({ success: false, message: 'Document not found' });
+      }
+
+      // Lấy ID của tệp từ URL
+      const fileId = extractFileIdFromUrl(document.fileUrl);
+
+      // Xóa tài liệu trên Google Drive
+      await drive.files.delete({ fileId });
+
+      // Xóa tài liệu trong cơ sở dữ liệu
+      await Documents.findByIdAndDelete(_id);
+
+      // Xóa censorship tương ứng
+      await Censorships.findOneAndDelete({ contentID: _id });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Document deleted successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+}
+
+// Hàm này để lấy ID của tệp từ URL trên Google Drive
+function extractFileIdFromUrl(url) {
+  const match = url.match(/\/file\/d\/([a-zA-Z0-9-_]+)\/?/);
+  return match ? match[1] : null;
 }
 
 export default new DocumentController();
