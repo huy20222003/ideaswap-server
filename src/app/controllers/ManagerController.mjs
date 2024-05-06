@@ -126,13 +126,12 @@ class ManagerController {
           roleID: userRole._id,
         });
         await newManager.save();
-      }
-  
-      return res.status(200).json({
+        return res.status(200).json({
         success: true,
         message: 'Manager added successfully!',
         manager: newManager,
       });
+      }
     } catch (error) {
       return res.status(500).json({
         success: false,
