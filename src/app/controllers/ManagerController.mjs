@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import Managers from '../models/Managers.mjs';
 import Roles from '../models/Roles.mjs';
+import { validationResult } from 'express-validator';
 //---------------------------------------
 
 dotenv.config();
