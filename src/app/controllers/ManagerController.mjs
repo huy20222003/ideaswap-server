@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import Managers from '../models/Managers.mjs';
 import Roles from '../models/Roles.mjs';
+import { validationResult } from 'express-validator';
 //---------------------------------------
 
 dotenv.config();
@@ -125,13 +126,12 @@ class ManagerController {
           roleID: userRole._id,
         });
         await newManager.save();
+        return res.status(200).json({
+          success: true,
+          message: 'Manager added successfully!',
+          manager: newManager,
+        });
       }
-  
-      return res.status(200).json({
-        success: true,
-        message: 'Manager added successfully!',
-        manager: newManager,
-      });
     } catch (error) {
       return res.status(500).json({
         success: false,

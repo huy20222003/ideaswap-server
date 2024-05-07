@@ -47,6 +47,7 @@ p, creator, /api/v1/follow/delete, DELETE
 p, user, /api/v1/user/update/:_id, PUT
 p, creator, /api/v1/user/update/:_id, PUT
 p, manager, /api/v1/user/update/:_id, PUT
+p, manager, /api/v1/user/delete/:_id, DELETE
 
 #comment router
 p, user, /api/v1/comment/add, POST

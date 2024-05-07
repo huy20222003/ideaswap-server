@@ -100,7 +100,7 @@ class DocumentController {
 
         const newCensorship = new Censorships({
           status: 'pending',
-          contentID: newDocument._id, 
+          contentID: newDocument._id,
           feedback: 'Tài liệu của bạn đang chờ duyệt',
         });
         await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
@@ -127,7 +127,9 @@ class DocumentController {
       // Kiểm tra xem document có tồn tại không
       const document = await Documents.findById(_id);
       if (!document) {
-        return res.status(404).json({ success: false, message: 'Document not found' });
+        return res
+          .status(404)
+          .json({ success: false, message: 'Document not found' });
       }
 
       // Lấy ID của tệp từ URL
@@ -145,6 +147,36 @@ class DocumentController {
       return res.status(200).json({
         success: true,
         message: 'Document deleted successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
+  async searchDocument(req, res) {
+    try {
+      const { q } = req.query;
+      console.log(q);
+      if (!q) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Query parameter is missing' });
+      }
+      // Tìm kiếm tài liệu dựa trên tiêu đề hoặc mô tả chứa query
+      const documents = await Documents.find({
+        $or: [
+          { title: { $regex: q, $options: 'i' } }, // $options: 'i' để tìm kiếm không phân biệt chữ hoa chữ thường
+          { description: { $regex: q, $options: 'i' } },
+        ],
+      });
+      return res.status(200).json({
+        success: true,
+        message: 'Search documents successfully!',
+        documents: documents,
       });
     } catch (error) {
       return res.status(500).json({

@@ -12,5 +12,6 @@ import upload from '../config/multer/index.mjs';
 router.get('/', DocumentController.getAllDocuments);
 router.post('/add', authVerify, casbinMiddleware, upload.single('file'), DocumentController.addDocument);
 router.delete('/delete/:_id', authVerify, casbinMiddleware, DocumentController.deleteDocument);
+router.get('/search', DocumentController.searchDocument);
 
 export default router;

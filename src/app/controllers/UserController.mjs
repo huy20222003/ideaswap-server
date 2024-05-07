@@ -1,4 +1,13 @@
 import Users from '../models/Users.mjs';
+import Blogs from '../models/Blogs.mjs';
+import Videos from '../models/Videos.mjs';
+import Comments from '../models/Comments.mjs';
+import Courses from '../models/Courses.mjs';
+import Follow from '../models/Follow.mjs';
+import Hearts from '../models/Hearts.mjs';
+import Shares from '../models/Shares.mjs';
+import Codes from '../models/Codes.mjs';
+import Censorships from '../models/Censorships.mjs';
 import bcrypt from 'bcryptjs';
 
 class UsersController {
@@ -81,6 +90,41 @@ class UsersController {
       });
     }
   }
+
+  async deleteUser(req, res) {
+    try {
+      const deletedUser = await Users.findByIdAndDelete(req.params._id);
+      if (!deletedUser) {
+        return res
+          .status(404)
+          .json({ success: false, error: 'User not found' });
+      }
+  
+      // Xóa các bản ghi liên quan trong các mô hình khác
+      await Promise.all([
+        Blogs.deleteMany({ userID: req.params._id }),
+        Videos.deleteMany({ userID: req.params._id }),
+        Comments.deleteMany({ userID: req.params._id }),
+        Courses.deleteMany({ userID: req.params._id }),
+        Follow.deleteMany({ userID: req.params._id }),
+        Hearts.deleteMany({ userID: req.params._id }),
+        Shares.deleteMany({ userID: req.params._id }),
+        Codes.deleteMany({ userID: req.params._id }),
+        Censorships.deleteMany({ userID: req.params._id })
+      ]);
+  
+      return res.status(200).json({
+        success: true,
+        message: 'User and related records deleted successfully!',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }  
 }
 
 export default new UsersController();
