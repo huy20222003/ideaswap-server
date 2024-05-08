@@ -86,3 +86,10 @@ p, creator, /api/v1/document/add, POST
 p, manager, /api/v1/document, GET
 p, creator, /api/v1/document/delete/:_id, DELETE
 p, manager, /api/v1/document/delete/:_id, DELETE
+p, creator, /api/v1/document/update/:_id, PUT
+p, manager, /api/v1/document/update/:_id, PUT
+
+#banner router
+p, manager, /api/v1/banner/add, POST
+p, manager, /api/v1/banner/update/:_id, PUT
+p, manager, /api/v1/banner/delete/:_id, DELETE

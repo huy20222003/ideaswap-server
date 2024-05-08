@@ -14,6 +14,7 @@ import roleRouter from './roleRouter.mjs';
 import managerRouter from './managerRouter.mjs';
 import codeRouter from './codeRouter.mjs';
 import documentRouter from './documentRouter.mjs';
+import bannerRouter from './bannerRouter.mjs';
 //------------------------------------------------------------
 
 
@@ -33,6 +34,7 @@ function routes(app) {
     app.use('/api/v1/manager', managerRouter);
     app.use('/api/v1/code', codeRouter);
     app.use('/api/v1/document', documentRouter);
+    app.use('/api/v1/banner', bannerRouter);
 }
 
 export default routes;

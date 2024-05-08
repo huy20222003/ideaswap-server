@@ -86,28 +86,44 @@ class VideoController {
 
   async updateVideo(req, res) {
     try {
-      const updatedVideo = await Videos.findByIdAndUpdate(
-        req.params._id,
-        req.body,
-        { new: true }
-      );
+      const { _id } = req.params;
+      const { title, description, imageBase64, videoUrl, view } = req.body;
+
+      // Tạo một object chứa các trường cần cập nhật
+      let updateFields = {};
+      if (title) updateFields.title = title;
+      if (description) updateFields.description = description;
+      if (view !== null) updateFields.view = view;
+
+      // Nếu có imageBase64 được gửi lên, thực hiện tải lên và cập nhật imageUrl
+      if (imageBase64) {
+        const uploadResult = await Videos.uploadFileToCloudinary(imageBase64);
+        if (!uploadResult.status) {
+          return res
+            .status(500)
+            .json({ success: false, message: 'Error uploading imageUrl' });
+        }
+        updateFields.imageUrl = uploadResult.imageUrl;
+      }
+
+      // Thực hiện cập nhật và trả về bản ghi mới đã được cập nhật
+      const updatedVideo = await Videos.findByIdAndUpdate(_id, updateFields, {
+        new: true,
+      });
+
+      // Kiểm tra xem video có tồn tại không
       if (!updatedVideo) {
         return res
           .status(404)
           .json({ success: false, error: 'Video not found' });
       }
 
-      if (!updatedVideo.title) {
-        return res
-          .status(400)
-          .json({ success: false, error: 'Video title is required' });
-      } else {
-        return res.status(201).json({
-          success: true,
-          message: 'Video updated successfully!',
-          video: updatedVideo,
-        });
-      }
+      // Respond with success message
+      return res.status(200).json({
+        success: true,
+        message: 'Video updated successfully!',
+        video: updatedVideo,
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -130,7 +146,7 @@ class VideoController {
             .status(404)
             .json({ success: false, error: 'Video not found' });
         }
-  
+
         return res.status(201).json({
           success: true,
           message: 'Video updated successfully!',
@@ -149,7 +165,7 @@ class VideoController {
         error: error.message,
       });
     }
-  }  
+  }
 
   async deleteVideo(req, res) {
     try {

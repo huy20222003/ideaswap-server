@@ -76,28 +76,41 @@ class CourseController {
 
   async updateCourse(req, res) {
     try {
-      const updatedCourse = await Courses.findByIdAndUpdate(
-        req.params._id,
-        req.body,
-        { new: true }
+      const { _id } = req.params;
+      const { title, description, imageBase64 } = req.body;
+  
+      // Tạo một object chứa các trường cần cập nhật
+      let updateFields = {};
+      if (title) updateFields.title = title;
+      if (description) updateFields.description = description;
+  
+      // Nếu có imageBase64 được gửi lên, thực hiện tải lên và cập nhật imageUrl
+      if (imageBase64) {
+        const uploadResult = await Courses.uploadFileToCloudinary(imageBase64);
+        if (!uploadResult.status) {
+          return res.status(500).json({ success: false, message: 'Error uploading imageUrl' });
+        }
+        updateFields.imageUrl = uploadResult.imageUrl;
+      }
+  
+      // Thực hiện cập nhật và trả về bản ghi mới đã được cập nhật
+      const updatedCourse = await Courses.findOneAndUpdate(
+        { _id: _id }, // Điều kiện tìm kiếm
+        updateFields, // Dữ liệu cập nhật
+        { new: true } // Trả về bản ghi mới đã được cập nhật
       );
+  
+      // Kiểm tra xem course có tồn tại không
       if (!updatedCourse) {
-        return res
-          .status(404)
-          .json({ success: false, error: 'Course not found' });
+        return res.status(404).json({ success: false, error: 'Course not found' });
       }
-
-      if (!updatedCourse.title) {
-        return res
-          .status(400)
-          .json({ success: false, error: 'Course title is required' });
-      } else {
-        return res.status(201).json({
-          success: true,
-          message: 'Course updated successfully!',
-          course: updatedCourse,
-        });
-      }
+  
+      // Respond with success message
+      return res.status(200).json({
+        success: true,
+        message: 'Course updated successfully!',
+        course: updatedCourse,
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -105,7 +118,7 @@ class CourseController {
         error: error.message,
       });
     }
-  }
+  } 
 
   async deleteCourse(req, res) {
     try {
@@ -115,29 +128,20 @@ class CourseController {
           .status(404)
           .json({ success: false, error: 'Course not found' });
       }
-      const deletedCensorship = await Censorships.findOneAndDelete({
-        contentID: deletedBlog._id,
+      const deletedVideos = await Videos.deleteMany({
+        courseID: deletedCourse._id,
       });
-      if (deletedCensorship) {
-        const deletedVideos = await Videos.deleteMany({
-          courseID: deletedCourse._id,
-        });
-        if (deletedVideos) {
-          return res.status(201).json({
-            success: true,
-            message: 'Course deleted successfully!',
-            deletedCourse,
-          });
-        } else {
-          return res.status(400).json({
-            success: true,
-            message: 'Course deleted failed!',
-          });
-        }
-      } else {
-        return res.status(400).json({
+      if(deletedVideos) {
+        return res.status(201).json({
           success: true,
+          message: 'Course deleted successfully!',
+          deletedCourse,
+        });
+      } else {
+        return res.status(201).json({
+          success: false,
           message: 'Course deleted failed!',
+          deletedCourse,
         });
       }
     } catch (error) {

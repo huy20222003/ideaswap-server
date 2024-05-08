@@ -39,6 +39,35 @@ class DocumentController {
     }
   }
 
+  async getDocumentById(req, res) {
+    try {
+      const { _id } = req.params;
+
+      // Tìm tài liệu theo ID
+      const document = await Documents.findById(_id);
+
+      // Kiểm tra xem tài liệu có tồn tại không
+      if (!document) {
+        return res
+          .status(404)
+          .json({ success: false, message: 'Document not found' });
+      }
+
+      // Trả về tài liệu nếu tìm thấy
+      return res.status(200).json({
+        success: true,
+        message: 'Document found successfully!',
+        document: document,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
   async addDocument(req, res) {
     try {
       // Kiểm tra xem request có chứa file không
@@ -60,7 +89,7 @@ class DocumentController {
           mimeType: file.mimetype,
         };
 
-        const uploadedFile = await drive.files.create({
+        await drive.files.create({
           resource: fileMetadata,
           media: {
             mimeType: file.mimetype,
@@ -120,6 +149,107 @@ class DocumentController {
     }
   }
 
+  async updateDocument(req, res) {
+    try {
+      const { _id } = req.params;
+
+      // Kiểm tra xem document có tồn tại không
+      let document = await Documents.findById(_id);
+      if (!document) {
+        return res
+          .status(404)
+          .json({ success: false, message: 'Document not found' });
+      }
+
+      if (req.file) {
+        const file = req.file;
+
+        const id = extractFileIdFromUrl(document.fileUrl);
+        drive.files.delete({fileId: id});
+
+        // Upload file mới lên Google Drive
+        const fileMetadata = {
+          name: file.originalname,
+          mimeType: file.mimetype,
+        };
+
+        await drive.files.create({
+          resource: fileMetadata,
+          media: {
+            mimeType: file.mimetype,
+            body: fs.createReadStream(file.path),
+          },
+          fields: 'webContentLink',
+        });
+
+        // Lấy ID của file mới từ Google Drive
+        const {
+          data: { files },
+        } = await drive.files.list({
+          q: `name='${file.originalname}' and trashed=false`,
+          fields: 'files(id)',
+        });
+
+        const fileId = files[0].id;
+
+        await drive.permissions.create({
+          fileId,
+          requestBody: {
+            role: 'reader',
+            type: 'anyone',
+          },
+        });
+
+        // Cập nhật fileUrl mới
+        document.fileUrl = `https://drive.google.com/file/d/${fileId}/view`;
+      }
+
+      // Cập nhật các trường khác nếu có dữ liệu được gửi lên
+      // Tạo một object chứa các trường cần cập nhật
+      let updateFields = {};
+      if (req.body.title) updateFields.title = req.body.title;
+      if (req.body.description) updateFields.description = req.body.description;
+      if (req.body.countDownload) updateFields.countDownload = req.body.countDownload;
+      if (req.body.imageBase64) {
+        const uploadResult = await Documents.uploadFileToCloudinary(
+          req.body.imageBase64
+        );
+        if (!uploadResult.status) {
+          return res
+            .status(500)
+            .json({ success: false, message: 'Error uploading imageUrl' });
+        } else {
+          updateFields.imageUrl = uploadResult.imageUrl;
+        }
+      }
+
+      // Thực hiện cập nhật document
+      const updatedDocument = await Documents.findOneAndUpdate(
+        { _id },
+        updateFields,
+        { new: true }
+      );
+      if (!updatedDocument) {
+        return res
+          .status(404)
+          .json({ success: false, message: 'Document not found' });
+      }
+
+      // Respond with success message
+      return res.status(200).json({
+        success: true,
+        message: 'Document updated successfully!',
+        document: updatedDocument,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
   async deleteDocument(req, res) {
     try {
       const { _id } = req.params;
@@ -160,7 +290,6 @@ class DocumentController {
   async searchDocument(req, res) {
     try {
       const { q } = req.query;
-      console.log(q);
       if (!q) {
         return res
           .status(400)

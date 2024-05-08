@@ -86,28 +86,40 @@ class BlogController {
 
   async updateBlog(req, res) {
     try {
-      const updatedBlog = await Blogs.findByIdAndUpdate(
-        req.params._id,
-        req.body,
-        { new: true }
+      const { _id } = req.params;
+      const { content, imageBase64 } = req.body;
+  
+      // Tạo một object chứa các trường cần cập nhật
+      let updateFields = {};
+      if (content) updateFields.content = content;
+  
+      // Nếu có imageBase64 được gửi lên, thực hiện tải lên và cập nhật imageUrl
+      if (imageBase64) {
+        const uploadResult = await Blogs.uploadFileToCloudinary(imageBase64);
+        if (!uploadResult.status) {
+          return res.status(500).json({ success: false, message: 'Error uploading imageUrl' });
+        }
+        updateFields.url = uploadResult.imageUrl;
+      }
+  
+      // Thực hiện cập nhật và trả về bản ghi mới đã được cập nhật
+      const updatedBlog = await Blogs.findOneAndUpdate(
+        { _id: _id }, // Điều kiện tìm kiếm
+        updateFields, // Dữ liệu cập nhật
+        { new: true } // Trả về bản ghi mới đã được cập nhật
       );
+  
+      // Kiểm tra xem course có tồn tại không
       if (!updatedBlog) {
-        return res
-          .status(404)
-          .json({ success: false, error: 'Blog not found' });
+        return res.status(404).json({ success: false, error: 'Blog not found' });
       }
-
-      if (!updatedBlog.content || !updatedBlog.url || !updatedBlog.userID) {
-        return res
-          .status(400)
-          .json({ success: false, error: 'Required fields missing' });
-      } else {
-        return res.status(201).json({
-          success: true,
-          message: 'Blog updated successfully!',
-          blog: updatedBlog,
-        });
-      }
+  
+      // Respond with success message
+      return res.status(200).json({
+        success: true,
+        message: 'Blog updated successfully!',
+        blog: updatedBlog,
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -115,7 +127,7 @@ class BlogController {
         error: error.message,
       });
     }
-  }
+  } 
 
   async deleteBlog(req, res) {
     try {

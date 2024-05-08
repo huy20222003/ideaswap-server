@@ -13,10 +13,7 @@ import bcrypt from 'bcryptjs';
 class UsersController {
   async getAllUsers(req, res) {
     try {
-      const users = await Users.find(
-        {},
-        { password: 0 }
-      );
+      const users = await Users.find({}, { password: 0 });
       return res.status(200).json({
         success: true,
         message: 'Retrieve users data successfully!',
@@ -65,6 +62,26 @@ class UsersController {
         updateData.password = hashedPassword;
       }
 
+      // Check if imageBase64 is provided in the request body
+      if (updateData.imageBase64) {
+        // Upload image to Cloudinary
+        const uploadResult = await Users.uploadFileToCloudinary(
+          updateData.imageBase64
+        );
+        if (uploadResult.status === 'error') {
+          return res.status(500).json({
+            success: false,
+            message: 'Error uploading image to Cloudinary',
+            error: uploadResult.error,
+          });
+        }
+        // Replace imageBase64 with Cloudinary image URL in the update data
+        updateData.avatar = uploadResult.imageUrl;
+
+        // Remove imageBase64 field from updateData
+        delete updateData.imageBase64;
+      }
+
       const updatedUser = await Users.findByIdAndUpdate(
         req.params._id,
         updateData,
@@ -99,7 +116,7 @@ class UsersController {
           .status(404)
           .json({ success: false, error: 'User not found' });
       }
-  
+
       // Xóa các bản ghi liên quan trong các mô hình khác
       await Promise.all([
         Blogs.deleteMany({ userID: req.params._id }),
@@ -110,9 +127,9 @@ class UsersController {
         Hearts.deleteMany({ userID: req.params._id }),
         Shares.deleteMany({ userID: req.params._id }),
         Codes.deleteMany({ userID: req.params._id }),
-        Censorships.deleteMany({ userID: req.params._id })
+        Censorships.deleteMany({ userID: req.params._id }),
       ]);
-  
+
       return res.status(200).json({
         success: true,
         message: 'User and related records deleted successfully!',
@@ -124,7 +141,7 @@ class UsersController {
         error: error.message,
       });
     }
-  }  
+  }
 }
 
 export default new UsersController();
