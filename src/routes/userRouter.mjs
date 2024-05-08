@@ -10,6 +10,6 @@ import UserController from '../app/controllers/UserController.mjs';
 router.get('/:_id', UserController.getUserById);
 router.get('/', UserController.getAllUsers);
 router.put('/update/:_id', authVerify, casbinMiddleware, UserController.updateUser);
-router.put('/delete/:_id', authVerify, casbinMiddleware, UserController.deleteUser);
+router.delete('/delete/:_id', authVerify, casbinMiddleware, UserController.deleteUser);
 
 export default router;
