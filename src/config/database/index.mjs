@@ -5,7 +5,7 @@ import { connect } from 'mongoose';
 async function connectDB() {
   try {
     await connect(
-      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@learning-app.3an83io.mongodb.net/learning?retryWrites=true&w=majority&appName=learning-app`
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@learning-app.3an83io.mongodb.net/ideaswap?retryWrites=true&w=majority&appName=learning-app`
       
     );
     console.log('Connect successfully');
