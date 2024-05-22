@@ -120,6 +120,40 @@ class CourseController {
     }
   } 
 
+  async updateView(req, res) {
+    try {
+      if (req.body.view !== null) {
+        const updatedCourse = await Courses.findByIdAndUpdate(
+          req.params._id,
+          req.body,
+          { new: true }
+        );
+        if (!updatedCourse) {
+          return res
+            .status(404)
+            .json({ success: false, error: 'Course not found' });
+        }
+
+        return res.status(201).json({
+          success: true,
+          message: 'Course updated successfully!',
+          course: updatedCourse,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid view value',
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
   async deleteCourse(req, res) {
     try {
       const deletedCourse = await Courses.findByIdAndDelete(req.params._id);

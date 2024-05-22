@@ -11,6 +11,7 @@ router.get('/:_id', CourseController.getCourseById);
 router.get('/', CourseController.getAllCourses);
 router.post('/add', authVerify, casbinMiddleware, CourseController.addCourse);
 router.put('/update/:_id', CourseController.updateCourse);
+router.put('/update/view/:_id', authVerify, casbinMiddleware, CourseController.updateView);
 router.delete('/delete/:_id', authVerify, casbinMiddleware, CourseController.deleteCourse);
 
 export default router;
