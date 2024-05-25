@@ -17,7 +17,7 @@ await connectDB();
 
 //cors
 const corsOptions = {
-  origin: '*',
+  origin: ['http://localhost:5173', 'https://ideaswap.netlify.app', 'https://ideaswap-management.netlify.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
