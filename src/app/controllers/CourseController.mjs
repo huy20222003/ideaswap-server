@@ -186,6 +186,35 @@ class CourseController {
       });
     }
   }
+
+  async searchCourse(req, res) {
+    try {
+      const { q } = req.query;
+      if (!q) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Query parameter is missing' });
+      }
+      // Tìm kiếm tài liệu dựa trên tiêu đề hoặc mô tả chứa query
+      const courses = await Courses.find({
+        $or: [
+          { title: { $regex: q, $options: 'i' } }, // $options: 'i' để tìm kiếm không phân biệt chữ hoa chữ thường
+          { description: { $regex: q, $options: 'i' } },
+        ],
+      });
+      return res.status(200).json({
+        success: true,
+        message: 'Search courses successfully!',
+        courses: courses,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default new CourseController();

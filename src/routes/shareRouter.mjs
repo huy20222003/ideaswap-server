@@ -7,6 +7,35 @@ import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 import ShareController from '../app/controllers/ShareController.mjs';
 //-----------------------------------------------------------
 
-router.get('/', ShareController.getAllShares);
+/**
+ * @openapi
+ * tags:
+ *   name: Shares
+ *   description: Share management endpoints
+ */
+
+/**
+ * @openapi
+ * /api/v1/share:
+ *   get:
+ *     summary: Get all shares
+ *     tags: [Shares]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of shares
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+router.get('/', authVerify, casbinMiddleware, ShareController.getAllShares);
 
 export default router;

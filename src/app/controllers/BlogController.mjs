@@ -1,6 +1,6 @@
 import Blogs from '../models/Blogs.mjs';
-import Users from '../models/Users.mjs';
 import Censorships from '../models/Censorships.mjs';
+import Notifications from '../models/Notifications.mjs';
 
 class BlogController {
   async getAllBlogs(req, res) {
@@ -67,6 +67,12 @@ class BlogController {
             feedback: 'Bài viết của bạn đang chờ duyệt',
           });
           await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
+          const newNotification = new Notifications({
+            description: 'Your blog is awaiting approval',
+            imageUrl: newBlog?.url,
+            userID: newBlog?.userID,
+          });
+          newNotification.save();
           return res.status(201).json({
             success: true,
             message: 'Blog added successfully!',
@@ -88,32 +94,36 @@ class BlogController {
     try {
       const { _id } = req.params;
       const { content, imageBase64 } = req.body;
-  
+
       // Tạo một object chứa các trường cần cập nhật
       let updateFields = {};
       if (content) updateFields.content = content;
-  
+
       // Nếu có imageBase64 được gửi lên, thực hiện tải lên và cập nhật imageUrl
       if (imageBase64) {
         const uploadResult = await Blogs.uploadFileToCloudinary(imageBase64);
         if (!uploadResult.status) {
-          return res.status(500).json({ success: false, message: 'Error uploading imageUrl' });
+          return res
+            .status(500)
+            .json({ success: false, message: 'Error uploading imageUrl' });
         }
         updateFields.url = uploadResult.imageUrl;
       }
-  
+
       // Thực hiện cập nhật và trả về bản ghi mới đã được cập nhật
       const updatedBlog = await Blogs.findOneAndUpdate(
         { _id: _id }, // Điều kiện tìm kiếm
         updateFields, // Dữ liệu cập nhật
         { new: true } // Trả về bản ghi mới đã được cập nhật
       );
-  
+
       // Kiểm tra xem course có tồn tại không
       if (!updatedBlog) {
-        return res.status(404).json({ success: false, error: 'Blog not found' });
+        return res
+          .status(404)
+          .json({ success: false, error: 'Blog not found' });
       }
-  
+
       // Respond with success message
       return res.status(200).json({
         success: true,
@@ -127,7 +137,7 @@ class BlogController {
         error: error.message,
       });
     }
-  } 
+  }
 
   async deleteBlog(req, res) {
     try {

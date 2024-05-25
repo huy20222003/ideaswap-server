@@ -6,7 +6,7 @@ const Banners = new Schema(
     managerID: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'Users',
+      ref: 'Manager',
     },
     name: {
       type: String,

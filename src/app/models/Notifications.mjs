@@ -3,15 +3,6 @@ import cloudinary from '../../config/cloudinary/index.mjs';
 
 const Notifications = new Schema(
   {
-    managerID: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'Managers',
-    },
-    title: {
-      type: String,
-      required: true,
-    },
     description: {
       type: String,
       required: true,
@@ -20,9 +11,15 @@ const Notifications = new Schema(
       type: String,
       required: true,
     },
-    isUnred: {
+    isUnRead: {
       type: Schema.Types.Boolean,
       required: true,
+      default: true,
+    },
+    userID: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'Users',
     },
   },
   {

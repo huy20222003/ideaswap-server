@@ -55,6 +55,10 @@ p, manager, /api/v1/user/delete/:_id, DELETE
 p, user, /api/v1/comment/add, POST
 p, creator, /api/v1/comment/add, POST
 
+#share router
+p, user, /api/v1/share, GET
+p, creator, /api/v1/share, GET
+
 #censoship router
 p, manager, /api/v1/censoships/update, PUT
 
@@ -95,3 +99,11 @@ p, manager, /api/v1/document/update/:_id, PUT
 p, manager, /api/v1/banner/add, POST
 p, manager, /api/v1/banner/update/:_id, PUT
 p, manager, /api/v1/banner/delete/:_id, DELETE
+
+#notification router
+p, creator, /api/v1/notification, GET
+p, manager, /api/v1/notification, GET
+p, user, /api/v1/notification, GET
+p, creator, /api/v1/notification/update/:_id, PUT
+p, manager, /api/v1/notification/update/:_id, PUT
+p, user, /api/v1/notification/update/:_id, PUT

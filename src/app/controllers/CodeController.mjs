@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import Users from '../models/Users.mjs';
 import Codes from '../models/Codes.mjs';
 import { createTransport } from 'nodemailer';
+import fs from 'fs';
 //---------------------------------------
 
 dotenv.config();
@@ -36,8 +37,9 @@ class CodeController {
         from: '(IdeaSwap) support@idealswap.edu.vn',
         to: email,
         subject: 'Your Verification Code',
-        html: `Your verification code is: <b>${code}</b>. If you did not initiate this action, please change your password to secure your account.`,
-      };
+        html: fs.readFileSync('src\\template\\verification_email_template.html', 'utf8')
+            .replace('{{code}}', code).replace('{{fullName}}', user?.firstName + ' ' + user?.lastName), 
+    };    
 
       await transporter.sendMail(mailOptions);
 

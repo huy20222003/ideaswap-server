@@ -1,5 +1,6 @@
 import Documents from '../models/Documents.mjs';
 import Censorships from '../models/Censorships.mjs';
+import Notifications from '../models/Notifications.mjs';
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
 import fs from 'fs'; // Import fs module for file streaming
@@ -133,6 +134,12 @@ class DocumentController {
           feedback: 'Tài liệu của bạn đang chờ duyệt',
         });
         await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
+        const newNotification = new Notifications({
+          description: 'Your document is awaiting approval',
+          imageUrl: newDocument?.imageUrl,
+          userID: newDocument?.userID,
+        });
+        newNotification.save();
         // Respond with success message
         return res.status(200).json({
           success: true,

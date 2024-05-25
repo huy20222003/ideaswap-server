@@ -21,7 +21,7 @@ class HeartController {
     }
   }
 
-  async addCourse(req, res) {
+  async addComment(req, res) {
     try {
       const { content, userID, bvID, parentCommentID } = req.body;
       if (!content || !bvID || !userID) {

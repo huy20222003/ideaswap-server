@@ -4,48 +4,52 @@ const router = Router();
 import authVerify from '../middleware/authVerify.mjs';
 import casbinMiddleware from '../middleware/casbinMiddleware.mjs';
 // controller
-import CensorshipsController from '../app/controllers/CensorshipsController.mjs';
+import NotificationsController from '../app/controllers/NotificationsController.mjs';
+
+//-----------------------------------------------------------
 
 /**
  * @openapi
  * tags:
- *   name: Censorships
- *   description: Censorship management endpoints
+ *   name: Notifications
+ *   description: Notification management endpoints
  */
 
 /**
  * @openapi
- * /api/v1/censorships:
+ * /api/v1/notification:
  *   get:
- *     summary: Get all censorships
- *     tags: [Censorships]
+ *     summary: Get all notifications
+ *     tags: [Notifications]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: List of censorships
+ *         description: List of notifications
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   status:
- *                     type: string
- *                   description:
- *                     type: string
+ *       401:
+ *         description: Unauthorized
  *       500:
  *         description: Server error
  */
-router.get('/', CensorshipsController.getAllCensorships);
+router.get(
+  '/',
+  authVerify,
+  casbinMiddleware,
+  NotificationsController.getAllNotifications
+);
 
 /**
  * @openapi
- * /api/v1/censorships/update:
+ * /api/v1/notification/update:
  *   put:
- *     summary: Update censorship
- *     tags: [Censorships]
+ *     summary: Update notification
+ *     tags: [Notifications]
  *     requestBody:
  *       required: true
  *       content:
@@ -61,12 +65,12 @@ router.get('/', CensorshipsController.getAllCensorships);
  *                 type: string
  *     responses:
  *       200:
- *         description: Censorship updated
+ *         description: Notification updated
  *       400:
  *         description: Bad request
  *       500:
  *         description: Server error
  */
-router.put('/update', CensorshipsController.updateCensorship);
+router.put('/update/:_id', NotificationsController.updateNotification);
 
 export default router;

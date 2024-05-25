@@ -1,6 +1,7 @@
 import Videos from '../models/Videos.mjs';
 import Censorships from '../models/Censorships.mjs';
 import Comments from '../models/Comments.mjs';
+import Notifications from '../models/Notifications.mjs';
 
 class VideoController {
   async getVideoById(req, res) {
@@ -67,6 +68,12 @@ class VideoController {
             feedback: 'Video của bạn đang chờ duyệt',
           });
           await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
+          const newNotification = new Notifications({
+            description: 'Your video is awaiting approval',
+            imageUrl: newVideo?.imageUrl,
+            userID: newVideo?.userID,
+          });
+          newNotification.save();
           return res.status(201).json({
             success: true,
             message: 'Video added successfully!',

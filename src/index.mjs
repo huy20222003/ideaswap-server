@@ -31,8 +31,8 @@ app.use(morgan('dev'));
 route(app);
 
 // Định nghĩa các route cho ứng dụng của bạn
-app.get('/', (req, res) => {
-  res.send('Hello, this is your server!');
+app.get('/', (req, res)=>{
+  res.send("Hello World");
 });
 
 app.listen(PORT, () => {
