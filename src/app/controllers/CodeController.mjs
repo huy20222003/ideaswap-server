@@ -37,7 +37,7 @@ class CodeController {
         from: '(IdeaSwap) support@idealswap.edu.vn',
         to: email,
         subject: 'Your Verification Code',
-        html: fs.readFileSync('src\\template\\verification_email_template.html', 'utf8')
+        html: fs.readFileSync('src/template/verification_email_template.html', 'utf8')
             .replace('{{code}}', code).replace('{{fullName}}', user?.firstName + ' ' + user?.lastName), 
     };    
 
