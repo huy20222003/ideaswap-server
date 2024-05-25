@@ -19,8 +19,6 @@ import FollowController from '../app/controllers/FollowController.mjs';
  *   get:
  *     summary: Get all follows
  *     tags: [Follows]
- *     security:
- *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of follows
@@ -38,7 +36,7 @@ import FollowController from '../app/controllers/FollowController.mjs';
  *       500:
  *         description: Server error
  */
-router.get('/', authVerify, casbinMiddleware, FollowController.getAllFollows);
+router.get('/', FollowController.getAllFollows);
 
 /**
  * @openapi

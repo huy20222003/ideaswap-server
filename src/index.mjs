@@ -17,7 +17,11 @@ await connectDB();
 
 //cors
 const corsOptions = {
-  origin: '*',
+  origin: [
+    'http://localhost:5173',
+    'https://ideaswap.netlify.app',
+    'https://ideaswap-management.netlify.app',
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -31,11 +35,10 @@ app.use(morgan('dev'));
 route(app);
 
 // Định nghĩa các route cho ứng dụng của bạn
-app.get('/', (req, res)=>{
-  res.send("Hello World");
+app.get('/', (req, res) => {
+  res.send('Hello World');
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on  http://localhost:${PORT}`);
 });
-

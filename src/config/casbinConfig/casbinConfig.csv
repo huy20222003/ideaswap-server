@@ -38,8 +38,6 @@ p, creator, /api/v1/course/update/view/:_id, PUT
 p, user, /api/v1/course/update/view:_id, PUT
 
 #follow router
-p, user, /api/v1/follow, GET
-p, creator, /api/v1/follow, GET
 p, user, /api/v1/follow/add, POST
 p, creator, /api/v1/follow/add, POST
 p, user, /api/v1/follow/delete, DELETE
