@@ -18,7 +18,6 @@ const Notifications = new Schema(
     },
     userID: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'Users',
       default: null
     },
