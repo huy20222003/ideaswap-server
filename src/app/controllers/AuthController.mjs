@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 import Roles from '../models/Roles.mjs';
 import { validationResult } from 'express-validator';
+import Notifications from '../models/Notifications.mjs';
 //---------------------------------------
 
 dotenv.config();
@@ -71,6 +72,13 @@ class AuthController {
       await newUser.save();
       const accessToken = newUser.generateAccessToken();
       const refreshToken = newUser.generateRefreshToken();
+
+      const newNotification = new Notifications({
+        description: 'A new user just registered',
+        imageUrl: newUser?.avatar,
+        userID: null
+      });
+      newNotification.save();
 
       return res.status(200).json({
         success: true,

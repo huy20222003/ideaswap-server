@@ -17,6 +17,34 @@ class ShareController {
       });
     }
   }
+
+  async addShare(req, res) {
+    try {
+      const { bvID, userID } = req.body;
+      if (!bvID || !userID) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Required fields missing' });
+      } else {
+        const newShare = new Shares({
+          bvID,
+          userID,
+        });
+        await newShare.save();
+        return res.status(201).json({
+          success: true,
+          message: 'Share added successfully!',
+          share: newShare,
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default new ShareController();

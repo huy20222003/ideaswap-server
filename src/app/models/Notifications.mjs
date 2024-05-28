@@ -20,6 +20,7 @@ const Notifications = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'Users',
+      default: null
     },
   },
   {

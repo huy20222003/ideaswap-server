@@ -71,7 +71,7 @@ router.get('/', authVerify, casbinMiddleware, ManagerController.getAllManagers);
 
 /**
  * @openapi
- * /api/v1/manager:
+ * /api/v1/manager/add:
  *   post:
  *     summary: Add a new manager
  *     tags: [Managers]
@@ -91,7 +91,7 @@ router.get('/', authVerify, casbinMiddleware, ManagerController.getAllManagers);
  *       500:
  *         description: Server error
  */
-router.post('/', authVerify, casbinMiddleware, ManagerController.addManager);
+router.post('/add', authVerify, casbinMiddleware, ManagerController.addManager);
 
 /**
  * @openapi
@@ -123,7 +123,7 @@ router.post('/', authVerify, casbinMiddleware, ManagerController.addManager);
  *       500:
  *         description: Server error
  */
-router.put('/:_id', authVerify, casbinMiddleware, ManagerController.updateManager);
+router.put('/update/:_id', authVerify, casbinMiddleware, ManagerController.updateManager);
 
 /**
  * @openapi
@@ -147,7 +147,7 @@ router.put('/:_id', authVerify, casbinMiddleware, ManagerController.updateManage
  *       500:
  *         description: Server error
  */
-router.delete('/:_id', authVerify, casbinMiddleware, ManagerController.deleteManager);
+router.delete('/delete/:_id', authVerify, casbinMiddleware, ManagerController.deleteManager);
 
 export default router;
 

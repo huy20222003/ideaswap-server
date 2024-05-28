@@ -65,11 +65,11 @@ class VideoController {
           const newCensorship = new Censorships({
             status: 'pending',
             contentID: newVideo._id,
-            feedback: 'Video của bạn đang chờ duyệt',
+            feedback: 'Video is awaiting approval',
           });
           await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
           const newNotification = new Notifications({
-            description: 'Your video is awaiting approval',
+            description: 'Video is awaiting approval',
             imageUrl: newVideo?.imageUrl,
             userID: newVideo?.userID,
           });

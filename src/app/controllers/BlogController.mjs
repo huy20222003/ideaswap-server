@@ -64,11 +64,11 @@ class BlogController {
           const newCensorship = new Censorships({
             status: 'pending',
             contentID: newBlog._id, // Thay đổi từ 'contenID' thành 'blogID'
-            feedback: 'Bài viết của bạn đang chờ duyệt',
+            feedback: 'Blog is awaiting approval',
           });
           await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
           const newNotification = new Notifications({
-            description: 'Your blog is awaiting approval',
+            description: 'Blog is awaiting approval',
             imageUrl: newBlog?.url,
             userID: newBlog?.userID,
           });

@@ -1,5 +1,6 @@
 import Courses from '../models/Courses.mjs';
 import Videos from '../models/Videos.mjs';
+import Notifications from '../models/Notifications.mjs';
 
 class CourseController {
   async getAllCourses(req, res) {
@@ -58,6 +59,12 @@ class CourseController {
             view: 0,
           });
           await newCourse.save();
+          const newNotification = new Notifications({
+            description: 'A new course has just been created',
+            imageUrl: newCourse?.imageUrl,
+            userID: null,
+          });
+          newNotification.save();
           return res.status(201).json({
             success: true,
             message: 'Course added successfully!',

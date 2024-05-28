@@ -131,11 +131,11 @@ class DocumentController {
         const newCensorship = new Censorships({
           status: 'pending',
           contentID: newDocument._id,
-          feedback: 'Tài liệu của bạn đang chờ duyệt',
+          feedback: 'Document is awaiting approval',
         });
         await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
         const newNotification = new Notifications({
-          description: 'Your document is awaiting approval',
+          description: 'Document is awaiting approval',
           imageUrl: newDocument?.imageUrl,
           userID: newDocument?.userID,
         });

@@ -56,6 +56,8 @@ p, creator, /api/v1/comment/add, POST
 #share router
 p, user, /api/v1/share, GET
 p, creator, /api/v1/share, GET
+p, user, /api/v1/share/add, POST
+p, creator, /api/v1/share/add, POST
 
 #censoship router
 p, manager, /api/v1/censoships/update, PUT
