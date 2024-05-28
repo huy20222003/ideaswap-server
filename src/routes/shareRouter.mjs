@@ -36,7 +36,7 @@ import ShareController from '../app/controllers/ShareController.mjs';
  *       500:
  *         description: Server error
  */
-router.get('/', authVerify, casbinMiddleware, ShareController.getAllShares);
+router.get('/', ShareController.getAllShares);
 
 /**
  * @openapi
