@@ -166,9 +166,12 @@ class DocumentController {
         return res.status(404).json({ success: false, message: 'Document not found' });
       }
   
+      let updateFields = {};
+  
       if (req.file) {
         const file = req.file;
   
+        // Xóa file cũ trên Google Drive
         const id = extractFileIdFromUrl(document.fileUrl);
         await drive.files.delete({ fileId: id });
   
@@ -199,35 +202,32 @@ class DocumentController {
           },
         });
   
-        // Cập nhật các trường khác nếu có dữ liệu được gửi lên
-        let updateFields = {
-          fileUrl: `https://drive.google.com/file/d/${fileId}/view`,
-        };
+        updateFields.fileUrl = `https://drive.google.com/file/d/${fileId}/view`;
+      }
   
-        if (req.body.title) updateFields.title = req.body.title;
-        if (req.body.description) updateFields.description = req.body.description;
-        if (req.body.countDownload) updateFields.countDownload = req.body.countDownload;
+      if (req.body.title) updateFields.title = req.body.title;
+      if (req.body.description) updateFields.description = req.body.description;
+      if (req.body.countDownload) updateFields.countDownload = req.body.countDownload;
   
-        if (req.body.imageBase64) {
-          const uploadResult = await Documents.uploadFileToCloudinary(req.body.imageBase64);
-          if (!uploadResult.status) {
-            return res.status(500).json({ success: false, message: 'Error uploading imageUrl' });
-          } else {
-            updateFields.imageUrl = uploadResult.imageUrl;
-          }
+      if (req.body.imageBase64) {
+        const uploadResult = await Documents.uploadFileToCloudinary(req.body.imageBase64);
+        if (!uploadResult.status) {
+          return res.status(500).json({ success: false, message: 'Error uploading imageUrl' });
+        } else {
+          updateFields.imageUrl = uploadResult.imageUrl;
         }
+      }
   
-        // Thực hiện cập nhật document
+      // Thực hiện cập nhật document nếu có updateFields
+      if (Object.keys(updateFields).length > 0) {
         const updatedDocument = await Documents.findByIdAndUpdate(_id, updateFields, { new: true });
-  
-        // Respond with success message
         return res.status(200).json({
           success: true,
           message: 'Document updated successfully!',
           document: updatedDocument,
         });
       } else {
-        return res.status(400).json({ success: false, message: 'No file provided for update' });
+        return res.status(400).json({ success: false, message: 'No fields provided for update' });
       }
     } catch (error) {
       return res.status(500).json({
