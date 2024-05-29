@@ -144,6 +144,8 @@ router.post('/add', authVerify, casbinMiddleware, CourseController.addCourse);
  *   put:
  *     summary: Update a course
  *     tags: [Courses]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: _id
  *         in: path
@@ -171,7 +173,7 @@ router.post('/add', authVerify, casbinMiddleware, CourseController.addCourse);
  *       500:
  *         description: Server error
  */
-router.put('/update/:_id', CourseController.updateCourse);
+router.put('/update/:_id', authVerify, casbinMiddleware, CourseController.updateCourse);
 
 /**
  * @openapi

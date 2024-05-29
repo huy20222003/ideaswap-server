@@ -33,6 +33,7 @@ p, user, /api/v1/video/update/view:_id, PUT
 #course router
 p, creator, /api/v1/course/add, POST
 p, creator, /api/v1/course/delete/:_id, DELETE
+p, creator, /api/v1/course/update/:_id, PUT
 p, manager, /api/v1/course/delete/:_id, DELETE
 p, creator, /api/v1/course/update/view/:_id, PUT
 p, user, /api/v1/course/update/view:_id, PUT
