@@ -4,9 +4,6 @@ class HeartController {
   async getAllComments(req, res) {
     try {
       const comments = await Comments.find({});
-      comments.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
       return res.status(200).json({
         success: true,
         message: 'Retrieve comments data successfully!',

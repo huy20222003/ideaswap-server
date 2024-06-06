@@ -71,6 +71,6 @@ router.get(
  *       500:
  *         description: Server error
  */
-router.put('/update/:_id', NotificationsController.updateNotification);
+router.put('/update', NotificationsController.updateNotification);
 
 export default router;
