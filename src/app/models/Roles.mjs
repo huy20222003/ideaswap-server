@@ -4,7 +4,7 @@ const Roles = new Schema(
   {
     name: {
       type: String,
-      maxLength: 200,
+      maxLength: 10,
       required: true,
     },
   },

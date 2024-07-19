@@ -8,17 +8,25 @@ const Courses = new Schema(
       required: true,
       ref: 'Users',
     },
+    categoryID: {
+      type: Schema.Types.ObjectId,
+      ref: "Categories",
+      require: true
+    },
     title: {
       type: String,
       required: true,
+      maxLength: 100
     },
     description: {
       type: String,
       required: true,
+      maxLength: 5000
     },
     imageUrl: {
       type: String,
       required: true,
+      maxLength: 150
     },
     view: {
       type: Number,

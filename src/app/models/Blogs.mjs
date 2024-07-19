@@ -5,16 +5,22 @@ const Blogs = new Schema(
   {
     content: {
         type: String,
-        maxLength: 2000,
+        maxLength: 5000,
         required: true,
     },
     url: {
         type: String,
-        required: true,
+        maxLength: 150
     },
     userID: {
         type: Schema.Types.ObjectId,
         ref: 'Users', 
+        require: true
+    },
+    categoryID: {
+      type: Schema.Types.ObjectId,
+      ref: 'Categories',
+      require: true
     }
   },
   {

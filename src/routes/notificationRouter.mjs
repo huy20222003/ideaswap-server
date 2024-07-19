@@ -17,6 +17,35 @@ import NotificationsController from '../app/controllers/NotificationsController.
 
 /**
  * @openapi
+ * /api/v1/notification/{:userId}:
+ *   get:
+ *     summary: Get notifications by userId
+ *     tags: [Notifications]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of notifications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+router.get(
+  '/:userId',
+  authVerify,
+  casbinMiddleware,
+  NotificationsController.getNotificationsByUserId
+);
+
+/**
+ * @openapi
  * /api/v1/notification:
  *   get:
  *     summary: Get all notifications

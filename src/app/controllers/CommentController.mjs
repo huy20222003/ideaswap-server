@@ -20,15 +20,15 @@ class HeartController {
 
   async addComment(req, res) {
     try {
-      const { content, userID, bvID, parentCommentID } = req.body;
-      if (!content || !bvID || !userID) {
+      const { content, userID, referenceID, parentCommentID } = req.body;
+      if (!content || !referenceID || !userID) {
         return res
           .status(400)
           .json({ success: false, message: 'Required fields missing' });
       } else {
         const newComment = new Comments({
           content,
-          bvID,
+          referenceID,
           userID,
           parentCommentID
         });

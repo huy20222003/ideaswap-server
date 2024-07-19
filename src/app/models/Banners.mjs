@@ -11,14 +11,17 @@ const Banners = new Schema(
     name: {
       type: String,
       required: true,
+      maxLength: 30
     },
     site: {
       type: String,
       required: true,
+      maxLength: 30
     },
     imageUrl: {
       type: String,
       required: true,
+      maxLength: 150
     },
   },
   {

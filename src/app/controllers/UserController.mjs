@@ -13,7 +13,18 @@ import bcrypt from 'bcryptjs';
 class UsersController {
   async getAllUsers(req, res) {
     try {
-      const users = await Users.find({}, { password: 0 });
+      const users = await Users.find(
+        {},
+        {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+          username: 1,
+          roleID: 1,
+          avatar: 1,
+          description: 1,
+        }
+      );
       return res.status(200).json({
         success: true,
         message: 'Retrieve users data successfully!',
@@ -30,7 +41,15 @@ class UsersController {
 
   async getUserById(req, res) {
     try {
-      const user = await Users.findById(req.params._id).populate('roleID');
+      const user = await Users.findById(req.params._id, {
+        _id: 1,
+        firstName: 1,
+        lastName: 1,
+        username: 1,
+        roleID: 1,
+        avatar: 1,
+        description: 1,
+      }).populate('roleID');
       return res.status(200).json({
         success: true,
         message: 'Retrieve user data successfully!',
@@ -134,6 +153,70 @@ class UsersController {
         success: true,
         message: 'User and related records deleted successfully!',
       });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
+  async forgetPassword(req, res) {
+    try {
+      const { data } = req.body;
+
+      // Search for user by email or username
+      const user = await Users.findOne(
+        {
+          $or: [{ email: data }, { username: data }],
+        },
+        { firstName: 1, lastName: 1, email: 1 }
+      );
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found.',
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Retrieve user data successfully!',
+        user: user,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
+  async resetPassword(req, res) {
+    try {
+      const { email, newPassword, code } = req.body;
+      const { _id } = req.params;
+
+      const checkCode = await Codes.findOne({ userEmail: email, code: code });
+      if (checkCode) {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+        const updatedUser = await Users.findByIdAndUpdate(
+          _id,
+          { password: hashedPassword },
+          { new: true }
+        );
+
+        if (updatedUser) {
+          return res.status(201).json({
+            success: true,
+            message: 'User updated successfully!',
+          });
+        }
+      }
     } catch (error) {
       return res.status(500).json({
         success: false,

@@ -19,8 +19,6 @@ import CodeController from '../app/controllers/CodeController.mjs';
  *   post:
  *     summary: Send a code
  *     tags: [Codes]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -40,7 +38,7 @@ import CodeController from '../app/controllers/CodeController.mjs';
  *       500:
  *         description: Server error
  */
-router.post('/send', authVerify, casbinMiddleware, CodeController.sendCode);
+router.post('/send', CodeController.sendCode);
 
 /**
  * @openapi
@@ -48,8 +46,6 @@ router.post('/send', authVerify, casbinMiddleware, CodeController.sendCode);
  *   post:
  *     summary: Verify a code
  *     tags: [Codes]
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -72,6 +68,6 @@ router.post('/send', authVerify, casbinMiddleware, CodeController.sendCode);
  *       500:
  *         description: Server error
  */
-router.post('/verify', authVerify, casbinMiddleware, CodeController.verifyCode);
+router.post('/verify', CodeController.verifyCode);
 
 export default router;

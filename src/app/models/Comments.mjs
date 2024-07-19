@@ -5,6 +5,7 @@ const Comments = new Schema(
     content: {
       type: String,
       required: true,
+      maxLength: 1000
     },
     parentCommentID: {
       type: Schema.Types.ObjectId,
@@ -15,7 +16,7 @@ const Comments = new Schema(
       required: true,
       ref: "Users"
     },
-    bvID: {
+    referenceID: {
       type: Schema.Types.ObjectId,
       required: true,
     },

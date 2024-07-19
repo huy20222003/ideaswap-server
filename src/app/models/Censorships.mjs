@@ -3,7 +3,7 @@ import { Schema, model } from 'mongoose';
 const Censorships = new Schema(
   {
     contentID: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
     },
     status: {
@@ -11,6 +11,7 @@ const Censorships = new Schema(
       enum: ['approved', 'pending', 'rejected'],
       default: 'pending',
       required: true,
+      maxLength: 10
     },
     feedback: {
       type: String,

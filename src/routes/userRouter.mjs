@@ -16,6 +16,58 @@ import UserController from '../app/controllers/UserController.mjs';
 
 /**
  * @openapi
+ * /api/v1/user/forget-password:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Users]
+ *     parameters:
+ *       - name: _id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.post('/forget-password', UserController.forgetPassword);
+
+/**
+ * @openapi
+ * /api/v1/user/reset-password:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Users]
+ *     parameters:
+ *       - name: _id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.put('/reset-password/:_id', UserController.resetPassword);
+
+/**
+ * @openapi
  * /api/v1/user/{_id}:
  *   get:
  *     summary: Get user by ID
@@ -96,7 +148,12 @@ router.get('/', UserController.getAllUsers);
  *       500:
  *         description: Server error
  */
-router.put('/update/:_id', authVerify, casbinMiddleware, UserController.updateUser);
+router.put(
+  '/update/:_id',
+  authVerify,
+  casbinMiddleware,
+  UserController.updateUser
+);
 
 /**
  * @openapi
@@ -120,6 +177,11 @@ router.put('/update/:_id', authVerify, casbinMiddleware, UserController.updateUs
  *       500:
  *         description: Server error
  */
-router.delete('/delete/:_id', authVerify, casbinMiddleware, UserController.deleteUser);
+router.delete(
+  '/delete/:_id',
+  authVerify,
+  casbinMiddleware,
+  UserController.deleteUser
+);
 
 export default router;

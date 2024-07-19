@@ -42,45 +42,50 @@ class BlogController {
 
   async addBlog(req, res) {
     try {
-      const { content, url, userID } = req.body;
-      if (!content || !url || !userID) {
-        // Thêm kiểm tra cho trường userID
+      const { content, imageBase64, userID } = req.body;
+      if (!content || !userID) {
         return res
           .status(400)
           .json({ success: false, message: 'Required fields missing' });
-      } else {
-        const uploadResult = await Blogs.uploadFileToCloudinary(url);
+      }
+
+      let imageUrl = ''; // Biến để lưu trữ URL ảnh sau khi upload
+      if (imageBase64) {
+        const uploadResult = await Blogs.uploadFileToCloudinary(imageBase64);
         if (!uploadResult.status) {
           return res
             .status(500)
             .json({ success: false, message: 'Error uploading imageUrl' });
-        } else {
-          const newBlog = new Blogs({
-            content,
-            url: uploadResult.imageUrl,
-            userID,
-          });
-          await newBlog.save();
-          const newCensorship = new Censorships({
-            status: 'pending',
-            contentID: newBlog._id, // Thay đổi từ 'contenID' thành 'blogID'
-            feedback: 'Blog is awaiting approval',
-          });
-          await newCensorship.save(); // Lưu mới censorship vào cơ sở dữ liệu
-          const newNotification = new Notifications({
-            description: 'Blog is awaiting approval',
-            imageUrl: newBlog?.url,
-            userID: newBlog?.userID,
-          });
-          newNotification.save();
-          return res.status(201).json({
-            success: true,
-            message: 'Blog added successfully!',
-            blog: newBlog,
-            censorship: newCensorship,
-          });
         }
+        imageUrl = uploadResult.imageUrl; // Lưu URL ảnh sau khi upload thành công
       }
+
+      const newBlog = new Blogs({
+        content,
+        url: imageUrl, // Sử dụng imageUrl đã lưu sau khi upload
+        userID,
+      });
+      await newBlog.save();
+
+      const newCensorship = new Censorships({
+        status: 'pending',
+        contentID: newBlog._id, // Sử dụng 'blogID' thay vì 'contentID'
+        feedback: 'Blog is awaiting approval',
+      });
+      await newCensorship.save();
+
+      const newNotification = new Notifications({
+        description: 'Blog is awaiting approval',
+        imageUrl: imageUrl || null, // imageUrl có thể là null nếu không có ảnh
+        userID,
+      });
+      await newNotification.save();
+
+      return res.status(201).json({
+        success: true,
+        message: 'Blog added successfully!',
+        blog: newBlog,
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -94,6 +99,13 @@ class BlogController {
     try {
       const { _id } = req.params;
       const { content, imageBase64 } = req.body;
+
+      // Kiểm tra xem content hoặc imageBase64 có tồn tại không
+      if (!content && !imageBase64) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'Nothing to update' });
+      }
 
       // Tạo một object chứa các trường cần cập nhật
       let updateFields = {};
@@ -111,13 +123,13 @@ class BlogController {
       }
 
       // Thực hiện cập nhật và trả về bản ghi mới đã được cập nhật
-      const updatedBlog = await Blogs.findOneAndUpdate(
-        { _id: _id }, // Điều kiện tìm kiếm
+      const updatedBlog = await Blogs.findByIdAndUpdate(
+        _id, // Điều kiện tìm kiếm
         updateFields, // Dữ liệu cập nhật
-        { new: true } // Trả về bản ghi mới đã được cập nhật
+        { new: true, useFindAndModify: false } // Trả về bản ghi mới đã được cập nhật và tắt useFindAndModify để tránh cảnh báo
       );
 
-      // Kiểm tra xem course có tồn tại không
+      // Kiểm tra xem blog có tồn tại không
       if (!updatedBlog) {
         return res
           .status(404)

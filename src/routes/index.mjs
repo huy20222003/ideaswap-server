@@ -16,6 +16,8 @@ import codeRouter from './codeRouter.mjs';
 import documentRouter from './documentRouter.mjs';
 import bannerRouter from './bannerRouter.mjs';
 import notificationRouter from './notificationRouter.mjs';
+import conversationRouter from './conversationsRouter.mjs';
+import messageRouter from './messageRouter.mjs';
 //swagger
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -59,6 +61,8 @@ function routes(app) {
   app.use('/api/v1/document', documentRouter);
   app.use('/api/v1/banner', bannerRouter);
   app.use('/api/v1/notification', notificationRouter);
+  app.use('/api/v1/conversation', conversationRouter);
+  app.use('/api/v1/message', messageRouter);
 }
 
 export default routes;

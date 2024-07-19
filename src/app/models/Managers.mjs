@@ -10,21 +10,19 @@ const Managers = new Schema(
     firstName: {
       type: String,
       default: '',
-      maxLength: 200,
+      maxLength: 100,
       required: true,
-      trim: true,
     },
     lastName: {
       type: String,
       default: '',
-      maxLength: 200,
+      maxLength: 100,
       required: true,
-      trim: true,
     },
     username: {
       type: String,
       default: '',
-      maxLength: 100,
+      maxLength: 50,
       required: true,
       trim: true,
       unique: true,
@@ -35,16 +33,18 @@ const Managers = new Schema(
       required: true,
       trim: true,
       unique: true,
+      maxLength: 320
     },
     phoneNumber: {
       type: String,
       default: null,
       trim: true,
+      maxLength: 10
     },
     address: {
       type: String,
       default: '',
-      maxLength: 3000,
+      maxLength: 1000,
     },
     password: {
       type: String,
@@ -57,6 +57,7 @@ const Managers = new Schema(
       type: String,
       default:
         'https://antimatter.vn/wp-content/uploads/2022/11/anh-avatar-trang-fb-mac-dinh.jpg',
+      maxLength: 150
     },
     birthday: {
       type: Schema.Types.Date,

@@ -1,4 +1,5 @@
 import Hearts from '../models/Hearts.mjs';
+import Notifications from '../models/Notifications.mjs';
 
 class HeartController {
   async getAllHearts(req, res) {
@@ -20,23 +21,22 @@ class HeartController {
 
   async addHeart(req, res) {
     try {
-      const { userID, bvID } = req.body;
-      if (!userID || !bvID) {
+      const { userID, referenceID } = req.body;
+      if (!userID || !referenceID) {
         return res
           .status(400)
           .json({ success: false, message: 'Required fields missing' });
       }
 
-      const existingHeart = await Hearts.findOne({ userID, bvID });
+      const existingHeart = await Hearts.findOne({ userID, referenceID });
       if (existingHeart) {
         return res
           .status(400)
           .json({ success: false, message: 'Heart already exists' });
       }
 
-      const newHeart = new Hearts({ userID, bvID });
+      const newHeart = new Hearts({ userID, referenceID });
       await newHeart.save();
-
       return res
         .status(201)
         .json({ success: true, message: 'Heart added successfully' });
@@ -53,7 +53,7 @@ class HeartController {
     try {
       const deletedHeart = await Hearts.findOneAndDelete({
         userID: req.body.userID,
-        bvID: req.body.bvID,
+        referenceID: req.body.referenceID,
       });
       if (!deletedHeart) {
         return res

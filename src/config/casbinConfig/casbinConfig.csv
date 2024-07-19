@@ -76,14 +76,6 @@ p, creator, /api/v1/role/:_id, GET
 p, manager, /api/v1/role, GET
 p, manager, /api/v1/role/:_id, GET
 
-#code router
-p, user, /api/v1/code/send, POST
-p, user, /api/v1/code/verify, POST
-p, creator, /api/v1/code/send, POST
-p, creator, /api/v1/code/verify, POST
-p, manager, /api/v1/code/send, POST
-p, manager, /api/v1/code/verify, POST
-
 #document router
 p, user, /api/v1/document, GET
 p, creator, /api/v1/document, GET
@@ -100,9 +92,25 @@ p, manager, /api/v1/banner/update/:_id, PUT
 p, manager, /api/v1/banner/delete/:_id, DELETE
 
 #notification router
-p, creator, /api/v1/notification, GET
 p, manager, /api/v1/notification, GET
-p, user, /api/v1/notification, GET
+p, creator, /api/v1/notification/:userId, GET
+p, user, /api/v1/notification/:userId, GET
 p, creator, /api/v1/notification/update/:_id, PUT
 p, manager, /api/v1/notification/update/:_id, PUT
 p, user, /api/v1/notification/update/:_id, PUT
+
+#conversation router
+p, manager, /api/v1/conversation, GET
+p, user, /api/v1/conversation/:userId, GET
+p, creator, /api/v1/conversation/:userId, GET
+p, user, /api/v1/conversation/get-by-id/:_id, GET
+p, creator, /api/v1/conversation/get-by-id/:_id, GET
+p, user, /api/v1/conversation/add, POST
+p, creator, /api/v1/conversation/add, POST
+p, user, /api/v1/conversation/delete/:_id, DELETE
+p, creator, /api/v1/conversation/delete/:_id, DELETE
+
+#message router
+p, manager, /api/v1/message, GET
+p, creator, /api/v1/message/:conversationId, GET
+p, user, /api/v1/message/:conversationId, GET

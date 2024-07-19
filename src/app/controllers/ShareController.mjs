@@ -20,14 +20,14 @@ class ShareController {
 
   async addShare(req, res) {
     try {
-      const { bvID, userID } = req.body;
-      if (!bvID || !userID) {
+      const { referenceID, userID } = req.body;
+      if (!referenceID || !userID) {
         return res
           .status(400)
           .json({ success: false, message: 'Required fields missing' });
       } else {
         const newShare = new Shares({
-          bvID,
+          referenceID,
           userID,
         });
         await newShare.save();

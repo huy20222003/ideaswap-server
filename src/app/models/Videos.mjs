@@ -11,18 +11,22 @@ const Videos = new Schema(
     title: {
       type: String,
       required: true,
+      maxLength: 100,
     },
     description: {
       type: String,
       required: true,
+      maxLength: 5000,
     },
     imageUrl: {
       type: String,
       required: true,
+      maxLength: 150,
     },
     videoUrl: {
       type: String,
       required: true,
+      maxLength: 100,
     },
     view: {
       type: Number,
@@ -63,6 +67,5 @@ Videos.statics.uploadFileToCloudinary = async function (file) {
     };
   }
 };
-
 
 export default model('Videos', Videos);

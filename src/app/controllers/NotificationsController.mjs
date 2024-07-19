@@ -21,6 +21,27 @@ class NotificationsController {
     }
   }
 
+  async getNotificationsByUserId(req, res) {
+    try {
+      const userId = req.params.userId;
+      const notifications = await Notifications.find({ userID: userId });
+      notifications.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      return res.status(200).json({
+        success: true,
+        message: 'Retrieve Notifications data successfully!',
+        notifications: notifications,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: 'An error occurred while processing the request.',
+        error: error.message,
+      });
+    }
+  }
+
   async updateNotification(req, res) {
     try {
       const { ...updateData } = req.body;
@@ -52,7 +73,7 @@ class NotificationsController {
       return res.status(200).json({
         success: true,
         message: 'Notification updated successfully!',
-        notifications
+        notifications,
       });
     } catch (error) {
       return res.status(500).json({

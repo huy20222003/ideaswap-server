@@ -7,7 +7,7 @@ const Shares = new Schema(
       required: true,
       ref: "Users"
     },
-    bvID: {
+    referenceID: {
       type: Schema.Types.ObjectId,
       required: true,
     }

@@ -6,10 +6,12 @@ const Notifications = new Schema(
     description: {
       type: String,
       required: true,
+      maxLength: 1000
     },
     imageUrl: {
       type: String,
       required: true,
+      maxLength: 150
     },
     isUnRead: {
       type: Schema.Types.Boolean,
@@ -17,10 +19,27 @@ const Notifications = new Schema(
       default: true,
     },
     userID: {
-      type: Schema.Types.ObjectId,
-      ref: 'Users',
-      default: null
+      type: Schema.Types.Array,
+      require: true
     },
+    actorID: {
+      type: Schema.Types.ObjectId,
+      require: true
+    },
+    referenceType: {
+      type: String,
+      maxLength: 50,
+      require: true
+    },
+    isModal: {
+      type: Schema.Types.Boolean,
+      required: true,
+      default: false,
+    },
+    referenceID: {
+      type: Schema.Types.ObjectId,
+      require: true
+    }
   },
   {
     timestamps: true,

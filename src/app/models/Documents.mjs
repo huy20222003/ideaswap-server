@@ -11,14 +11,17 @@ const Documents = new Schema(
     title: {
       type: String,
       required: true,
+      maxLength: 100
     },
     description: {
       type: String,
       required: true,
+      maxLength: 5000
     },
     fileUrl: {
       type: String,
       required: true,
+      maxLength: 100
     },
     countDownload: {
       type: Number,
@@ -26,17 +29,24 @@ const Documents = new Schema(
     },
     imageUrl: {
       type: String, 
-      require: true
+      require: true,
+      maxLength: 150
     },
     status: {
       type: Schema.Types.ObjectId,
       require: true,
       ref: 'Censorships',
+      maxLength: 10
     },
-    rate: {
+    score: {
       type: Number,
       default: 0,
     },
+    categoryID: {
+      type: Schema.Types.ObjectId,
+      ref: "Categories",
+      require: true
+    }
   },
   {
     timestamps: true,
