@@ -5,7 +5,10 @@ import cloudinary from './config/cloudinary/index.mjs'; // Import cloudinary con
 const setUpSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: ['http://localhost:5173'],
+      origin: [
+        'http://localhost:5173',
+        'https://ideaswap.netlify.app/dashboard/app',
+      ],
       methods: ['GET', 'POST'],
     },
   });
@@ -73,7 +76,7 @@ const setUpSocket = (server) => {
         // Set message content based on type
         if (type === 'text') {
           messageContent = content;
-        } 
+        }
 
         // Save message to MongoDB
         const newMessage = new Messages({
