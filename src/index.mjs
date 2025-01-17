@@ -63,6 +63,7 @@ const corsOptions = {
     'https://ideaswap.netlify.app',
     'http://localhost:5173',
     'https://ideaswap-management.netlify.app',
+    'http://localhost:3000'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
